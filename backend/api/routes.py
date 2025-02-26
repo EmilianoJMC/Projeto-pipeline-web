@@ -16,5 +16,7 @@ def get_filmes(db: Session = Depends(get_db)):
 
 @router.post("/filmes")
 def add_filme(filme: Filme, db: Session = Depends(get_db)):
-    print(f"Recebendo filme: {filme.titulo}, {filme.genero}")
-    return criar_filme(db, filme.titulo, filme.genero)
+    print(f"Recebendo filme: {filme.titulo}, {filme.genero}")  # Log de debug
+    novo_filme = criar_filme(db, filme.titulo, filme.genero)
+    print(f"Filme salvo no banco: {novo_filme}")  # Verifica se salvou
+    return {"mensagem": "Filme adicionado com sucesso!", "filme": novo_filme}
