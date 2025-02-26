@@ -3,51 +3,62 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from auth import is_admin
 
 API_URL = "http://127.0.0.1:8000"
 
-st.title("Dashboard de Filmes")
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
 
-# Função para obter filmes da API e converter em DataFrame
-def get_filmes():
-    response = requests.get(f"{API_URL}/filmes")
-    filmes = response.json()
-    # Transformar os dados em um DataFrame
-    df = pd.DataFrame(filmes)
-    return df
+if not st.session_state.logged_in:
+    st.warning("Por favor, faça login para continuar.")
+    st.experimental_set_query_params(page="login")
+else:
+    st.title("Dashboard de Filmes")
 
-# Função para criar gráfico de barras com a quantidade nos rótulos
-def plot_filmes_por_genero(df):
-    genero_count = df['genero'].value_counts()
-    fig, ax = plt.subplots()
-    sns.barplot(x=genero_count.index, y=genero_count.values, ax=ax)
-    for i in ax.containers:
-        ax.bar_label(i, label_type='edge')
-    ax.set_title("Quantidade de Filmes por Gênero")
-    ax.set_ylabel("Quantidade")
-    ax.set_xlabel("Gênero")
-    plt.xticks(rotation=45)
-    st.pyplot(fig)
+    # Função para obter filmes da API e converter em DataFrame
+    def get_filmes():
+        response = requests.get(f"{API_URL}/filmes")
+        filmes = response.json()
+        df = pd.DataFrame(filmes)
+        return df
 
-# Obter os filmes e exibir na tabela e no gráfico
-df_filmes = get_filmes()
+    # Função para criar gráfico de barras com a quantidade nos rótulos
+    def plot_filmes_por_genero(df):
+        genero_count = df['genero'].value_counts()
+        fig, ax = plt.subplots()
+        sns.barplot(x=genero_count.index, y=genero_count.values, ax=ax)
+        for i in ax.containers:
+            ax.bar_label(i, label_type='edge')
+        ax.set_title("Quantidade de Filmes por Gênero")
+        ax.set_ylabel("Quantidade")
+        ax.set_xlabel("Gênero")
+        plt.xticks(rotation=45)
+        st.pyplot(fig)
 
-# Gráfico de Barras
-st.subheader("Gráfico de Filmes por Gênero")
-plot_filmes_por_genero(df_filmes)
+    # Obter os filmes e exibir na tabela e no gráfico
+    df_filmes = get_filmes()
 
-# Tabela com Paginação
-st.subheader("Tabela de Filmes")
-filmes_por_pagina = 10
-total_paginas = (len(df_filmes) // filmes_por_pagina) + 1
+    # Gráfico de Barras
+    st.subheader("Gráfico de Filmes por Gênero")
+    plot_filmes_por_genero(df_filmes)
 
-# Adicionar um seletor de página
-pagina = st.number_input("Página", min_value=1, max_value=total_paginas, value=1, step=1)
-start = (pagina - 1) * filmes_por_pagina
-end = start + filmes_por_pagina
+    # Tabela com Paginação
+    st.subheader("Tabela de Filmes")
+    filmes_por_pagina = 10
+    total_paginas = (len(df_filmes) // filmes_por_pagina) + 1
 
-st.table(df_filmes.iloc[start:end][["titulo", "genero"]])
+    # Adicionar um seletor de página
+    pagina = st.number_input("Página", min_value=1, max_value=total_paginas, value=1, step=1)
+    start = (pagina - 1) * filmes_por_pagina
+    end = start + filmes_por_pagina
 
+    st.table(df_filmes.iloc[start:end][["id", "titulo", "genero"]])   
+
+    # Verificar se o usuário é administrador
+    if is_admin(st.session_state.username):
+        st.subheader("Administração")
+        st.write("Aqui você pode adicionar funcionalidades de administração.")
 
 
 
