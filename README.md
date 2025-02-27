@@ -14,7 +14,7 @@ O painel de controle de filmes possui as seguintes funcionalidades:
 
 ## Estrutura do Projeto
 
-```bash
+```plaintext
 frontend/
 ├── pages/
 │   └── login.py
@@ -33,6 +33,9 @@ backend/
 │   └── models.py
 └── services/
     └── extract.py
+scripts/
+└── cron_updates.py
+
 ```
 
 - **frontend/**: Contém a interface do usuário desenvolvida com Streamlit.
@@ -103,6 +106,12 @@ uvicorn backend.main:app --reload
 
 ```bash
 streamlit run frontend/app.py
+```
+
+6. Execute o script cron_updates.py:
+
+```bash
+python scripts/cron_updates.py
 ```
 
 ## Uso
