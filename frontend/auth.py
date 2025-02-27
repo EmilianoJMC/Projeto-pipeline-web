@@ -4,7 +4,7 @@ import json
 import os
 
 # Caminho para o arquivo de dados dos usuários
-USER_DB_PATH = "users_db.json"
+USER_DB_PATH = "frontend/users_db.json"
 
 # Função para carregar dados dos usuários do arquivo JSON
 def load_users():
@@ -38,4 +38,3 @@ def login_user(username, password):
 
 def is_admin(username):
     return users_db.get(username, {}).get("role") == "admin"
-

@@ -13,6 +13,7 @@ if st.button("Entrar"):
         st.session_state.logged_in = True
         st.session_state.username = usuario
         st.success("Login bem-sucedido!")
+        st.experimental_set_query_params(page="app")
     else:
         st.error("Nome de usuário ou senha incorretos.")
 

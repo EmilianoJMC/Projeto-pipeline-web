@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from auth import is_admin
+import io
 
 API_URL = "http://127.0.0.1:8000"
 
@@ -11,8 +12,8 @@ if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
 
 if not st.session_state.logged_in:
-    st.warning("Por favor, faça login para continuar.")
     st.experimental_set_query_params(page="login")
+    st.warning("Por favor, faça login para continuar.")
 else:
     st.title("Dashboard de Filmes")
 
@@ -36,6 +37,15 @@ else:
         plt.xticks(rotation=45)
         st.pyplot(fig)
 
+    # Função para exportar dados para Excel
+    def to_excel(df):
+        output = io.BytesIO()
+        writer = pd.ExcelWriter(output, engine='xlsxwriter')
+        df.to_excel(writer, index=False, sheet_name='Filmes')
+        writer.close()
+        processed_data = output.getvalue()
+        return processed_data
+
     # Obter os filmes e exibir na tabela e no gráfico
     df_filmes = get_filmes()
 
@@ -53,12 +63,18 @@ else:
     start = (pagina - 1) * filmes_por_pagina
     end = start + filmes_por_pagina
 
-    st.table(df_filmes.iloc[start:end][["id", "titulo", "genero"]])   
+    st.table(df_filmes.iloc[start:end][["titulo", "genero"]])
+
+    # Adicionar botão para exportar dados para Excel
+    if st.button("Download"):
+        df_xlsx = to_excel(df_filmes)
+        st.download_button(label='📥 Baixar Excel',
+                           data=df_xlsx,
+                           file_name='filmes.xlsx',
+                           mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')    
 
     # Verificar se o usuário é administrador
     if is_admin(st.session_state.username):
         st.subheader("Administração")
         st.write("Aqui você pode adicionar funcionalidades de administração.")
-
-
 
