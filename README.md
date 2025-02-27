@@ -1,8 +1,3 @@
-Claro! Vamos criar uma documentação detalhada para o seu projeto, que você pode adicionar ao README do seu repositório GitHub. A documentação incluirá uma visão geral do projeto, estrutura de diretórios, dependências, instruções de instalação, uso e possíveis melhorias futuras.
-
-### README.md
-
-```markdown
 # Dashboard de Filmes
 
 Este projeto é um painel de controle de filmes desenvolvido com FastAPI e Streamlit. Ele permite a listagem, adição e visualização de filmes, além de exportar os dados para um arquivo Excel.
