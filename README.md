@@ -1,4 +1,4 @@
-# Dashboard de Filmes
+# Pipeline Web
 
 Este projeto é um painel de controle de filmes desenvolvido com FastAPI e Streamlit. Ele permite a listagem, adição e visualização de filmes, além de exportar os dados para um arquivo Excel.
 
@@ -136,8 +136,6 @@ Sinta-se à vontade para contribuir com este projeto. Para contribuir:
 
 Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
----
 
-Com essa documentação, seu projeto estará bem detalhado e será fácil para outros contribuírem e utilizarem. Se precisar de mais alguma coisa ou ajustes, estarei por aqui para ajudar! 🚀
-```
+
 
